@@ -46,6 +46,7 @@ extern NSString * const vkRedirectUrl;
 - (void)postImageToWall:(UIImage *)image;
 - (void)postImageToWall:(UIImage *)image text:(NSString *)message;
 - (void)postImageToWall:(UIImage *)image text:(NSString *)message link:(NSURL *)url;
+- (NSString *)accessToken;
 
 @end
 

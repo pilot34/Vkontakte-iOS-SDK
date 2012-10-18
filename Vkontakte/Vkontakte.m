@@ -172,7 +172,7 @@
     NSMutableData *body = [NSMutableData data];
     
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: image/jpg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:imageData];        
     [body appendData:[[NSString stringWithFormat:@"%@",endItemBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -212,9 +212,8 @@
 
 @implementation Vkontakte
 
-#warning Provide your vkontakte app id
-NSString * const vkAppId = @"2440436";//@"YOUR_VK_APP_ID";
-NSString * const vkPermissions = @"wall,photos,offline";
+NSString * const vkAppId = @"3178420";//@"YOUR_VK_APP_ID";
+NSString * const vkPermissions = @"offline";
 NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
 @synthesize delegate;
@@ -261,6 +260,14 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
     {
         return YES;
     }
+}
+
+- (NSString *)accessToken
+{
+    if (![self isAuthorized])
+        return nil;
+    
+    return accessToken;
 }
 
 - (void)authenticate

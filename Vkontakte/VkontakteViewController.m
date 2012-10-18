@@ -98,11 +98,7 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView 
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES]; 
-    _hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:_hud];
-	_hud.dimBackground = YES;
-    _hud.delegate = self;
-    [_hud show:YES];
+    _loadingAlertView = [LoadingAlertView showWithTitle:@"Вход"];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView 
@@ -169,9 +165,8 @@
     }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];  
-    [_hud hide:YES];
-    [_hud removeFromSuperview];
-	_hud = nil;
+    [_loadingAlertView dismiss];
+    _loadingAlertView = nil;
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error 
@@ -184,9 +179,8 @@
     }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];  
-    [_hud hide:YES];
-    [_hud removeFromSuperview];
-	_hud = nil;
+    [_loadingAlertView dismiss];
+    _loadingAlertView = nil;
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType 
