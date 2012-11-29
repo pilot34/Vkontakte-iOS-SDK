@@ -212,6 +212,7 @@
 
 @implementation Vkontakte
 
+NSString * const vkAppId = @"3178420";//@"YOUR_VK_APP_ID";
 NSString * const vkPermissions = @"offline";
 NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
@@ -249,11 +250,6 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
     return self;
 }
 
-- (NSString *)vkAppID
-{
-    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"VKAppID"];
-}
-
 - (BOOL)isAuthorized
 {    
     if (![self isSessionValid]) 
@@ -276,7 +272,7 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
 - (void)authenticate
 {
-    NSString *authLink = [NSString stringWithFormat:@"http://oauth.vk.com/oauth/authorize?client_id=%@&scope=%@&redirect_uri=%@&display=touch&response_type=token", self.vkAppID, vkPermissions, vkRedirectUrl];
+    NSString *authLink = [NSString stringWithFormat:@"http://oauth.vk.com/oauth/authorize?client_id=%@&scope=%@&redirect_uri=%@&display=touch&response_type=token", vkAppId, vkPermissions, vkRedirectUrl];
     NSURL *url = [NSURL URLWithString:authLink];
     
     VkontakteViewController *vkontakteViewController = [[VkontakteViewController alloc] initWithAuthLink:url];
@@ -291,7 +287,7 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
 - (void)logout
 {
-    NSString *logout = [NSString stringWithFormat:@"http://api.vk.com/oauth/logout?client_id=%@", self.vkAppID];
+    NSString *logout = [NSString stringWithFormat:@"http://api.vk.com/oauth/logout?client_id=%@", vkAppId];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:logout] 
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 

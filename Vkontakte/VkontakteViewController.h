@@ -15,7 +15,6 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "LoadingAlertView.h"
 
 @protocol VkontakteViewControllerDelegate;
 @interface VkontakteViewController : UIViewController <UIWebViewDelegate>
