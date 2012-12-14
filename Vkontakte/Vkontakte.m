@@ -49,7 +49,7 @@
 {
     NSString *captcha_img = [[NSUserDefaults standardUserDefaults] objectForKey:@"captcha_img"];
     UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Введите код:\n\n\n\n\n"
-                                                          message:@"\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+                                                          message:@"\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(12.0, 45.0, 130.0, 50.0)];
     imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:captcha_img]]];
@@ -74,9 +74,8 @@
         
         UITextField *myTextField = (UITextField *)[actionSheet viewWithTag:33];
         [[NSUserDefaults standardUserDefaults] setObject:myTextField.text forKey:@"captcha_user"];
-        NSLog(@"Captcha entered: %@",myTextField.text);
+        NSLog(@"Captcha entered: %@", myTextField.text);
         
-        // Вспоминаем какой был последний запрос и делаем его еще раз
         NSString *request = [[NSUserDefaults standardUserDefaults] objectForKey:@"request"];
         
         NSDictionary *newRequestDict =[self sendRequest:request withCaptcha:YES];
@@ -101,9 +100,13 @@
             
         }
     }
+    else if(_isCaptcha && buttonIndex == 0)
+    {
+        [self logout];
+    }
 }
 
-- (NSDictionary *)sendRequest:(NSString *)reqURl withCaptcha:(BOOL)captcha 
+- (NSDictionary *)sendRequest:(NSString *)reqURl withCaptcha:(BOOL)captcha
 {
     if(captcha == YES)
     {
@@ -172,7 +175,7 @@
     NSMutableData *body = [NSMutableData data];
     
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: image/jpg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:imageData];        
     [body appendData:[[NSString stringWithFormat:@"%@",endItemBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -182,7 +185,7 @@
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
    
     if(responseData)
-    {        
+    {
         NSError* error;
         NSDictionary* dict = [NSJSONSerialization 
                               JSONObjectWithData:responseData
@@ -213,7 +216,7 @@
 @implementation Vkontakte
 
 #warning Provide your vkontakte app id
-NSString * const vkAppId = @"2440436";//@"YOUR_VK_APP_ID";
+NSString * const vkAppId = @"YOUR_VK_APP_ID";
 NSString * const vkPermissions = @"wall,photos,offline";
 NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
