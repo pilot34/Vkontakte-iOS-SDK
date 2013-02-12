@@ -35,7 +35,6 @@
     [defaults setObject:accessToken forKey:@"VKAccessTokenKey"];
     [defaults setObject:expirationDate forKey:@"VKExpirationDateKey"];
     [defaults setObject:userId forKey:@"VKUserID"];
-    [defaults setObject:email forKey:@"VKUserEmail"];
     [defaults synchronize];
 }
 
@@ -216,7 +215,7 @@
 @implementation Vkontakte
 
 #warning Provide your vkontakte app id
-NSString * const vkAppId = @"YOUR_VK_APP_ID";
+NSString * const vkAppId = @"3424121";
 NSString * const vkPermissions = @"wall,photos,offline";
 NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
@@ -242,13 +241,11 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         if ([defaults objectForKey:@"VKAccessTokenKey"] 
             && [defaults objectForKey:@"VKExpirationDateKey"]
-            && [defaults objectForKey:@"VKUserID"]
-            && [defaults objectForKey:@"VKUserEmail"]) 
+            && [defaults objectForKey:@"VKUserID"])
         {
             accessToken = [defaults objectForKey:@"VKAccessTokenKey"];
             expirationDate = [defaults objectForKey:@"VKExpirationDateKey"];
             userId = [defaults objectForKey:@"VKUserID"];
-            email = [defaults objectForKey:@"VKUserEmail"];
         }
     }
     return self;
@@ -283,82 +280,64 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 
 - (void)logout
 {
-    NSString *logout = [NSString stringWithFormat:@"http://api.vk.com/oauth/logout?client_id=%@", vkAppId];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:logout] 
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
-                                                       timeoutInterval:60.0]; 
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request 
-                                                 returningResponse:nil 
-                                                             error:nil];
-    if(responseData)
+    NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray* vkCookies1 = [cookies cookiesForURL:
+                           [NSURL URLWithString:@"http://api.vk.com"]];
+    NSArray* vkCookies2 = [cookies cookiesForURL:
+                           [NSURL URLWithString:@"http://vk.com"]];
+    NSArray* vkCookies3 = [cookies cookiesForURL:
+                           [NSURL URLWithString:@"http://login.vk.com"]];
+    NSArray* vkCookies4 = [cookies cookiesForURL:
+                           [NSURL URLWithString:@"http://oauth.vk.com"]];
+    
+    for (NSHTTPCookie* cookie in vkCookies1)
     {
-        NSError* error;
-        NSDictionary* dict = [NSJSONSerialization 
-                              JSONObjectWithData:responseData
-                              options:kNilOptions 
-                              error:&error];
-        NSLog(@"Logout: %@", dict);
+        [cookies deleteCookie:cookie];
+    }
+    for (NSHTTPCookie* cookie in vkCookies2)
+    {
+        [cookies deleteCookie:cookie];
+    }
+    for (NSHTTPCookie* cookie in vkCookies3)
+    {
+        [cookies deleteCookie:cookie];
+    }
+    for (NSHTTPCookie* cookie in vkCookies4)
+    {
+        [cookies deleteCookie:cookie];
+    }
+    
+    // Remove saved authorization information if it exists and it is
+    // ok to clear it (logout, session invalid, app unauthorized)
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"VKAccessTokenKey"])
+    {
+        [defaults removeObjectForKey:@"VKAccessTokenKey"];
+        [defaults removeObjectForKey:@"VKExpirationDateKey"];
+        [defaults removeObjectForKey:@"VKUserID"];
+        [defaults synchronize];
         
-        NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        NSArray* vkCookies1 = [cookies cookiesForURL:
-                               [NSURL URLWithString:@"http://api.vk.com"]];
-        NSArray* vkCookies2 = [cookies cookiesForURL:
-                               [NSURL URLWithString:@"http://vk.com"]];
-        NSArray* vkCookies3 = [cookies cookiesForURL:
-                               [NSURL URLWithString:@"http://login.vk.com"]];
-        NSArray* vkCookies4 = [cookies cookiesForURL:
-                               [NSURL URLWithString:@"http://oauth.vk.com"]];
-        
-        for (NSHTTPCookie* cookie in vkCookies1) 
+        // Nil out the session variables to prevent
+        // the app from thinking there is a valid session
+        if (accessToken)
         {
-            [cookies deleteCookie:cookie];
+            accessToken = nil;
         }
-        for (NSHTTPCookie* cookie in vkCookies2) 
+        if (expirationDate)
         {
-            [cookies deleteCookie:cookie];
+            expirationDate = nil;
         }
-        for (NSHTTPCookie* cookie in vkCookies3) 
-        {
-            [cookies deleteCookie:cookie];
-        }
-        for (NSHTTPCookie* cookie in vkCookies4) 
-        {
-            [cookies deleteCookie:cookie];
-        }
-        
-        // Remove saved authorization information if it exists and it is
-        // ok to clear it (logout, session invalid, app unauthorized)
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        if ([defaults objectForKey:@"VKAccessTokenKey"]) 
-        {
-            [defaults removeObjectForKey:@"VKAccessTokenKey"];
-            [defaults removeObjectForKey:@"VKExpirationDateKey"];
-            [defaults removeObjectForKey:@"VKUserID"];
-            [defaults removeObjectForKey:@"VKUserEmail"];
-            [defaults synchronize];
-            
-            // Nil out the session variables to prevent
-            // the app from thinking there is a valid session
-            if (accessToken) 
-            {
-                accessToken = nil;
-            }
-            if (expirationDate) 
-            {
-                expirationDate = nil;
-            }
-        }
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(vkontakteDidFinishLogOut:)]) 
-        {
-            [self.delegate vkontakteDidFinishLogOut:self];
-        }
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(vkontakteDidFinishLogOut:)])
+    {
+        [self.delegate vkontakteDidFinishLogOut:self];
     }
 }
 
 - (void)getUserInfo
-{    
+{
     if (![self isAuthorized]) return;
     
     NSMutableString *requestString = [[NSMutableString alloc] init];
@@ -392,7 +371,6 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
     {
         parsedDictionary = [array objectAtIndex:0];
         parsedDictionary = [NSMutableDictionary dictionaryWithDictionary:parsedDictionary];
-        [parsedDictionary setValue:email forKey:@"email"];
         
         if ([self.delegate respondsToSelector:@selector(vkontakteDidFinishGettinUserInfo:)])
         {
@@ -599,13 +577,11 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
 - (void)authorizationDidSucceedWithToke:(NSString *)_accessToken 
                                  userId:(NSString *)_userId 
                                 expDate:(NSDate *)_expDate
-                              userEmail:(NSString *)_email
 
 {
     accessToken = _accessToken;
     userId = _userId;
     expirationDate = _expDate;
-    email = _email;
     
     [self storeSession];
     
@@ -629,11 +605,6 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
     {
         [self.delegate vkontakteAuthControllerDidCancelled];
     }
-}
-
-- (void)didFinishGettingUserEmail:(NSString *)_email
-{
-    email = _email;
 }
 
 @end

@@ -66,7 +66,7 @@
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Отмена" 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" 
                                                                               style:UIBarButtonItemStyleBordered 
                                                                              target:self 
                                                                              action:@selector(cancelButtonPressed:)];
@@ -151,12 +151,11 @@
             } 
         }
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(authorizationDidSucceedWithToke:userId:expDate:userEmail:)]) 
+        if (self.delegate && [self.delegate respondsToSelector:@selector(authorizationDidSucceedWithToke:userId:expDate:)]) 
         {
             [self.delegate authorizationDidSucceedWithToke:accessToken 
                                                 userId:user_id 
-                                               expDate:expirationDate
-                                             userEmail:_userEmail];
+                                               expDate:expirationDate];
         }
     } 
     else if ([webView.request.URL.absoluteString rangeOfString:@"error"].location != NSNotFound) 
@@ -190,18 +189,8 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType 
-{    
-    NSString *s = @"var filed = document.getElementsByClassName('filed'); "
-    "var textField = filed[0];"
-    "textField.value;";            
-    NSString *email = [webView stringByEvaluatingJavaScriptFromString:s];
-    if (([email length] != 0) && _userEmail == nil) 
-    {
-        _userEmail = email;
-    }
-    
+{        
     NSURL *URL = [request URL];
-    // Пользователь нажал Отмена в веб-форме
     if ([[URL absoluteString] isEqualToString:@"http://api.vk.com/blank.html#error=access_denied&error_reason=user_denied&error_description=User%20denied%20your%20request"]) 
     {
         if (self.delegate && [self.delegate respondsToSelector:@selector(authorizationDidCanceled)]) 
