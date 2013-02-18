@@ -54,7 +54,6 @@
     [_userSurName setHidden:hide];
     [_userBDate setHidden:hide];
     [_userGender setHidden:hide];
-    [_userEmail setHidden:hide];
     
     [_postMessage setHidden:hide];
     [_postImage setHidden:hide];
@@ -162,7 +161,6 @@
     _userSurName.text = [info objectForKey:@"last_name"];
     _userBDate.text = [info objectForKey:@"bdate"];
     _userGender.text = [NSString stringWithGenderId:[[info objectForKey:@"sex"] intValue]];
-    _userEmail.text = [info objectForKey:@"email"];
 }
 
 - (void)vkontakteDidFinishPostingToWall:(NSDictionary *)responce

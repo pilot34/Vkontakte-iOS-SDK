@@ -22,7 +22,6 @@
     LoadingAlertView *_loadingAlertView;
     UIWebView *_webView;
     NSURL *_authLink;
-    NSString *_userEmail;
 }
 
 @property (nonatomic, weak) id <VkontakteViewControllerDelegate> delegate;  
@@ -35,8 +34,7 @@
 @optional
 - (void)authorizationDidSucceedWithToke:(NSString *)accessToken 
                                  userId:(NSString *)userId 
-                                expDate:(NSDate *)expDate
-                              userEmail:(NSString *)email;
+                                expDate:(NSDate *)expDate;
 - (void)authorizationDidFailedWithError:(NSError *)error;
 - (void)authorizationDidCanceled;
 @end

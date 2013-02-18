@@ -27,9 +27,8 @@ extern NSString * const vkRedirectUrl;
 {    
 
     NSString *accessToken;
-    NSDate *expirationDate;
+    NSDate   *expirationDate;
     NSString *userId;
-    NSString *email;
 
     BOOL _isCaptcha;
 }

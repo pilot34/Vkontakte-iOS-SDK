@@ -28,6 +28,7 @@
 		BC00B89415A5F5500071C2BB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC00B89015A5F5500071C2BB /* ViewController.m */; };
 		BC00B89515A5F5500071C2BB /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC00B89115A5F5500071C2BB /* ViewController_iPad.xib */; };
 		BC00B89615A5F5500071C2BB /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC00B89215A5F5500071C2BB /* ViewController_iPhone.xib */; };
+		BCC1F662167B795E007EB23A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCC1F661167B795E007EB23A /* Default-568h@2x.png */; };
 		BCD308C115A6DFB60089F563 /* NSString+Gender.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD308BA15A6DFB60089F563 /* NSString+Gender.m */; };
 		BCD308C215A6DFB60089F563 /* Vkontakte.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD308BC15A6DFB60089F563 /* Vkontakte.m */; };
 		BCD308C315A6DFB60089F563 /* VkontakteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD308BE15A6DFB60089F563 /* VkontakteViewController.m */; };
@@ -62,6 +63,7 @@
 		BC00B89015A5F5500071C2BB /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		BC00B89115A5F5500071C2BB /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
 		BC00B89215A5F5500071C2BB /* ViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
+		BCC1F661167B795E007EB23A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
 		BCD308B915A6DFB60089F563 /* NSString+Gender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Gender.h"; sourceTree = "<group>"; };
 		BCD308BA15A6DFB60089F563 /* NSString+Gender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Gender.m"; sourceTree = "<group>"; };
 		BCD308BB15A6DFB60089F563 /* Vkontakte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vkontakte.h; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		BC00B84C15A5F3550071C2BB /* images */ = {
 			isa = PBXGroup;
 			children = (
+				BCC1F661167B795E007EB23A /* Default-568h@2x.png */,
 				BC00B84D15A5F3550071C2BB /* Default-Landscape.png */,
 				BC00B84E15A5F3550071C2BB /* Default-Portrait.png */,
 				BC00B84F15A5F3550071C2BB /* Default.png */,
@@ -218,7 +221,7 @@
 		5FEF34091489054700BDA379 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 5FEF340C1489054700BDA379 /* Build configuration list for PBXProject "Vkontakte-iOS-SDK_Demo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -258,6 +261,7 @@
 				BC00B89515A5F5500071C2BB /* ViewController_iPad.xib in Resources */,
 				BC00B89615A5F5500071C2BB /* ViewController_iPhone.xib in Resources */,
 				BCD308ED15A6E1900089F563 /* README.mdown in Resources */,
+				BCC1F662167B795E007EB23A /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +302,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -312,6 +319,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -325,13 +333,17 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
