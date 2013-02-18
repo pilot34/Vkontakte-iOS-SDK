@@ -262,6 +262,14 @@ NSString * const vkRedirectUrl = @"http://oauth.vk.com/blank.html";
     }
 }
 
+- (NSString *)userId
+{
+    if (![self isAuthorized])
+        return nil;
+    
+    return userId;
+}
+
 - (NSString *)accessToken
 {
     if (![self isAuthorized])

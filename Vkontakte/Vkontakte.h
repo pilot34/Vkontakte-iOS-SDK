@@ -36,6 +36,7 @@ extern NSString * const vkRedirectUrl;
 @property (nonatomic, weak) id <VkontakteDelegate> delegate;
 
 + (id)sharedInstance;
+- (NSString *)userId;
 - (BOOL)isAuthorized;
 - (void)authenticate;
 - (void)logout;
